@@ -4,10 +4,24 @@ FROM opensciencegrid/software-base:fresh
 
 ENV XRD_VERSION=4.12.3
 ENV XRD_HOST=localhost
+ENV REDIR_HOST=localhost
+ENV REDIR_CMSD_PORT=3113
+ENV CACHE_LOG_LEVEL=info
+ENV CACHE_XRD_PORT=1094
+ENV ORIGIN_HOST=myorigin.com
+ENV ORIGIN_XRD_PORT=1094
+ENV STREAMS=256
+ENV LOW_WM=0.85
+ENV HI_WM=0.95
+ENV CACHE_RAM_GB=6
+ENV BLOCK_SIZE=512k
+ENV N_PREFETCH=0
+ENV CACHE_PATH=/data
 
-RUN yum  -y install wget
 
 WORKDIR /etc/yum.repos.d
+
+RUN yum install -y wget
 
 RUN wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo
 RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
@@ -53,8 +67,15 @@ RUN chmod -R +x /xrd/
 
 COPY ca/DODAS.pem /etc/grid-security/certificates/DODAS.pem
 COPY ca/DODAS.key /etc/grid-security/certificates/DODAS.key
+RUN chown -R xrootd: /etc/grid-security/certificates/DODAS.pem /etc/grid-security/certificates/DODAS.key
+
+COPY hostcert.pem /etc/grid-security/hostcert.pem
+COPY hostcert.key /etc/grid-security/hostcert.key
+
+RUN chown -R xrootd: /etc/grid-security/hostcert.pem /etc/grid-security/hostcert.key
+
+RUN chown -R xrootd: /etc/grid-security/*
 
 WORKDIR /xrd
 
 ENTRYPOINT ["/xrd/start.sh"]
-
