@@ -20,10 +20,14 @@ services:
     #     BLOCK_SIZE: 512k
     #     N_PREFETCH: 0
     links:
-    - origin
+       - origin
   origin:
     build: ../xrootd-escape-xrd
     environment:
       XRD_HOST: origin
     expose:
-        - 1094
+       - 1094 
+    #network_mode: "host"
+    network_mode: "host"
+    volumes: 
+       - ./mydata:/data
