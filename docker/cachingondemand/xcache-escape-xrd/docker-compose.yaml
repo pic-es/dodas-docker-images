@@ -3,8 +3,13 @@ services:
   xcache:
     build: .
     expose:
-    - 1094
+      - 1094
+    volumes:
+      - /etc/grid-security/certificates:/etc/grid-security/certificates
+      - /tmp/x509up_u1000:/tmp/x509up_u1000
+    hostname: condemand01.pic.es
     environment:
+      X509_USER_PROXY: /tmp/x509up_u1000
       XRD_HOST: xcache
       ORIGIN_HOST: origin
       ORIGIN_XRD_PORT: 31294
@@ -20,10 +25,13 @@ services:
     #     BLOCK_SIZE: 512k
     #     N_PREFETCH: 0
     links:
-    - origin
+       - origin
   origin:
     build: ../xrootd-escape-xrd
+    hostname: condemand02.pic.es
     environment:
       XRD_HOST: origin
     expose:
-        - 1094
+      - 1094 
+    volumes:
+      - /etc/grid-security/certificates:/etc/grid-security/certificates
