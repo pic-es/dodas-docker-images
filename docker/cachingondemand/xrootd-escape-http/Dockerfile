@@ -61,6 +61,9 @@ RUN chmod -R +x /xrd/
 COPY ca/DODAS.pem /etc/grid-security/certificates/DODAS.pem
 COPY ca/DODAS.key /etc/grid-security/certificates/DODAS.key
 
+COPY host-certs/condemand01_pic_es_cert_2.cer /etc/grid-security/hostcert.pem
+COPY host-certs/condemand01_pic_es_cert_2.key /etc/grid-security/hostcert.key
+
 RUN rm -rf /etc/grid-security/host*
 
 WORKDIR /xrd

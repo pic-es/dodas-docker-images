@@ -5,6 +5,9 @@ services:
     #image: dciangot/test:latest
     expose:
     - 8443
+    volumes:
+    - /tmp/x509up_u02:/tmp/x509up_u02
+    hostname: condemand01.pic.es
     environment:
       XRD_HOST: xcache
       ORIGIN_HOST: https://origin
@@ -21,10 +24,12 @@ services:
     #     BLOCK_SIZE: 512k
     #     N_PREFETCH: 0
     links:
-    - origin
+    - origin:condemand02.pic.es
   origin:
     build: ../xrootd-escape-http
+    hostname: condemand02.pic.es
     environment:
       XRD_HOST: origin
     expose:
-        - 8443
+    - 8443
+
