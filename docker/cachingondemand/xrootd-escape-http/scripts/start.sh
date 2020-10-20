@@ -24,6 +24,17 @@ if [ ! -f /etc/grid-security/hostcert.pem ]; then
     done
 fi
 
+if [ ! -f /etc/grid-security/hostcert.pem ]; then
+    if [ -f /etc/grid-security/condemand01_pic_es_cert_2.cer ]; then
+
+        cp /etc/grid-security/condemand01_pic_es_cert_2.cer /etc/grid-security/hostcert.pem
+       	cp /etc/grid-security/condemand01_pic_es_cert_2.key /etc/grid-security/hostcert.key
+        echo "Using predefined PIC CA"
+        chown -R xrootd: /etc/grid-security/hostcert.pem /etc/grid-security/hostcert.key
+      	
+    fi
+fi
+
 sudo -E -u xrootd /usr/bin/xrootd -l /var/log/xrootd/xrootd.log -c /etc/xrootd/xrootd-http.cfg -n http &
 
 sleep infinity

@@ -70,7 +70,10 @@ COPY ca/DODAS.key /etc/grid-security/certificates/DODAS.key
 RUN chown -R xrootd: /etc/grid-security/certificates/DODAS.pem /etc/grid-security/certificates/DODAS.key
 
 RUN yum install -y gfal2*
-
+# RUN yum -y install python-pip
+# RUN pip install supervisor
+# RUN mkdir -p /etc/supervisor/conf.d/
+# ADD supervisor/renew-proxy.sh /
 
 COPY ../host-certs/condemand01_pic_es_cert_2.cer /etc/grid-security/hostcert.pem
 COPY ../host-certs/condemand01_pic_es_cert_2.key /etc/grid-security/hostcert.key
@@ -79,4 +82,5 @@ RUN chown -R xrootd: /etc/grid-security/hostcert.pem /etc/grid-security/hostcert
 
 WORKDIR /xrd
 
+#CMD supervisord -c /etc/supervisord.conf --nodaemon
 ENTRYPOINT ["/xrd/start.sh"]

@@ -32,4 +32,3 @@ services:
       XRD_HOST: origin
     expose:
     - 8443
-
